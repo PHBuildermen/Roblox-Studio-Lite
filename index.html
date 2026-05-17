@@ -1,66 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Roblox Studio Lite V2 - Web Edition</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Roblox Studio Lite Version 2 Mobile</title>
+  <link rel="stylesheet" href="./styles/main.css" />
 </head>
 <body>
-    <div id="studio-container">
-        <!-- Explorer Panel -->
-        <div id="explorer-panel">
-            <div class="panel-header">Explorer</div>
-            <ul class="tree">
-                <li><span class="icon">🌍</span> Workspace
-                    <ul>
-                        <li>🩸 Red_Blood_Cells</li>
-                        <li>🫀 Main_Artery</li>
-                        <li>🧬 Blood_Vessels</li>
-                    </ul>
-                </li>
-                <li><span class="icon">👤</span> Players
-                    <ul>
-                        <li>LocalPlayer</li>
-                    </ul>
-                </li>
-                <li><span class="icon">🖥️</span> StarterGui
-                    <ul>
-                        <li>ScreenGui
-                            <ul>
-                                <li>StartButton</li>
-                                <li>PumpButton</li>
-                                <li>ScoreLabel</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li><span class="icon">📜</span> ServerScriptService
-                    <ul>
-                        <li>GameLogic (script.js)</li>
-                    </ul>
-                </li>
-            </ul>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-title">Roblox Studio Lite Version 2 Mobile</div>
+        <div class="brand-subtitle" id="modeLabel">Edit Mode</div>
+      </div>
+
+      <div class="top-actions">
+        <button id="playBtn" class="btn btn-primary">Play</button>
+        <button id="stopBtn" class="btn btn-danger" disabled>Stop</button>
+        <button id="saveBtn" class="btn">Save</button>
+        <button id="exportBtn" class="btn">Export</button>
+        <button id="importBtn" class="btn">Import</button>
+        <input id="importFile" type="file" accept="application/json" hidden />
+      </div>
+    </header>
+
+    <main class="workspace-grid">
+      <aside class="panel-column left-column">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Toolbox</h2>
+          </div>
+          <div class="toolbox-grid">
+            <button class="tool-btn" data-insert="Part">Part</button>
+            <button class="tool-btn" data-insert="Script">Script</button>
+            <button class="tool-btn" data-insert="LocalScript">LocalScript</button>
+            <button class="tool-btn" data-insert="RemoteEvent">RemoteEvent</button>
+          </div>
+          <div class="hint">
+            Inserted objects go under the selected Explorer item, or Workspace if nothing is selected.
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Explorer</h2>
+          </div>
+          <div id="explorerTree" class="explorer-tree"></div>
+        </section>
+      </aside>
+
+      <section class="viewport-column">
+        <div class="viewport-toolbar">
+          <div class="transform-group">
+            <button class="tool-mode-btn active" data-tool="select">Select</button>
+            <button class="tool-mode-btn" data-tool="move">Move</button>
+            <button class="tool-mode-btn" data-tool="rotate">Rotate</button>
+            <button class="tool-mode-btn" data-tool="scale">Scale</button>
+          </div>
+
+          <div class="camera-group">
+            <button id="zoomOutBtn" class="mini-btn">−</button>
+            <button id="zoomResetBtn" class="mini-btn">Reset</button>
+            <button id="zoomInBtn" class="mini-btn">+</button>
+            <button id="rotateLeftBtn" class="mini-btn">⟲</button>
+            <button id="rotateRightBtn" class="mini-btn">⟳</button>
+          </div>
         </div>
 
-        <!-- Game Viewport -->
-        <div id="viewport-panel">
-            <div class="panel-header">Game Viewport</div>
-            <div id="game-screen">
-                <div id="core-gui">
-                    <h1 id="status-text">Artery Rush</h1>
-                    <div id="stats-container" class="hidden">
-                        <p>Red Blood Cells: <span id="score">0</span> / 30</p>
-                        <p>Time Left: <span id="timer">10</span>s</p>
-                    </div>
-                    
-                    <button id="start-btn" class="studio-btn primary">Start Game</button>
-                    <button id="pump-btn" class="studio-btn action hidden">PUMP!</button>
-                </div>
+        <div class="viewport-wrap">
+          <canvas id="viewportCanvas"></canvas>
+
+          <div class="viewport-overlay">
+            <div class="touch-note">
+              Drag on empty space to pan camera. Pinch with two fingers to zoom. Twist to rotate.
             </div>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <script src="script.js"></script>
+      <aside class="panel-column right-column">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Properties</h2>
+          </div>
+          <div id="propertiesPanel" class="properties-panel"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Console</h2>
+          </div>
+          <div id="consolePanel" class="console-panel"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div id="scriptModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="scriptModalTitle">Script Editor</div>
+          <div class="modal-subtitle" id="scriptModalSubtitle"></div>
+        </div>
+        <button id="closeScriptModalBtn" class="btn">Close</button>
+      </div>
+
+      <textarea id="scriptEditor" class="script-editor" spellcheck="false"></textarea>
+
+      <div class="modal-actions">
+        <button id="saveScriptBtn" class="btn btn-primary">Save Script</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
 </body>
-</html>
+            </html>

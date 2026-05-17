@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Roblox Studio Lite V2 - Web Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="studio-container">
+        <!-- Explorer Panel -->
+        <div id="explorer-panel">
+            <div class="panel-header">Explorer</div>
+            <ul class="tree">
+                <li><span class="icon">🌍</span> Workspace
+                    <ul>
+                        <li>🩸 Red_Blood_Cells</li>
+                        <li>🫀 Main_Artery</li>
+                        <li>🧬 Blood_Vessels</li>
+                    </ul>
+                </li>
+                <li><span class="icon">👤</span> Players
+                    <ul>
+                        <li>LocalPlayer</li>
+                    </ul>
+                </li>
+                <li><span class="icon">🖥️</span> StarterGui
+                    <ul>
+                        <li>ScreenGui
+                            <ul>
+                                <li>StartButton</li>
+                                <li>PumpButton</li>
+                                <li>ScoreLabel</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><span class="icon">📜</span> ServerScriptService
+                    <ul>
+                        <li>GameLogic (script.js)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Game Viewport -->
+        <div id="viewport-panel">
+            <div class="panel-header">Game Viewport</div>
+            <div id="game-screen">
+                <div id="core-gui">
+                    <h1 id="status-text">Artery Rush</h1>
+                    <div id="stats-container" class="hidden">
+                        <p>Red Blood Cells: <span id="score">0</span> / 30</p>
+                        <p>Time Left: <span id="timer">10</span>s</p>
+                    </div>
+                    
+                    <button id="start-btn" class="studio-btn primary">Start Game</button>
+                    <button id="pump-btn" class="studio-btn action hidden">PUMP!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
